@@ -11,10 +11,10 @@ public class TicTacToeBoard extends JPanel {
 	ArrayList<DrawnX> xList = new ArrayList<DrawnX>();
 	ArrayList<DrawnO> oList = new ArrayList<DrawnO>();
 	boolean turn = true;
-	int titleFontSize = 36;
 	
-	public TicTacToeBoard() {
-		setSize(322,422);
+	
+	public TicTacToeBoard(int width, int height) {
+		setSize(width,height);
 		setBackground(Color.WHITE);
 		
 		MouseListen mouseEL = new MouseListen();
@@ -35,26 +35,36 @@ public class TicTacToeBoard extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
-		//font(font name , font.style, size)
-		
-		//TODO:
-		// update Instructions based on events
-		// draw x's o's snapped to grid
-		// draw a winning line through the winning x's or o's
-		
-		g.setFont(new Font("Comic Sans MS", Font.PLAIN, titleFontSize));
-		g.drawString("Tic Tac Toe", 0, (50 - titleFontSize) / 2 + titleFontSize );
-		
-		//DrawnO testO = new DrawnO(100,200);
-		//g.drawString("O", testO.xCoord, testO.yCoord);
-		
-		for (TicTacToeBoard.DrawnX thisX: xList) {
-			g.drawString("X", thisX.xCoord, thisX.yCoord);
-		}
-		
-		for (TicTacToeBoard.DrawnO thisO: oList) {
-			g.drawString("O", thisO.xCoord, thisO.yCoord);
-		}
+	    
+	    int lPad = 10;
+	    int tPad = 60;
+	    
+	    g.setFont(new Font("Comic Sans MS", Font.PLAIN, 32));
+	    g.drawString("Allen's Tic Tac Toe Game", 120, 40);
+	    
+	    g.setFont(new Font("Comic Sans MS", Font.PLAIN, 200));
+	    //g.drawString("X",10 + lPad, 180 + tPad);
+	    
+          
+	    g.drawLine(201 + lPad, 0 + tPad, 201 + lPad, 602 + tPad);
+	    g.drawLine(402 + lPad, 0 + tPad, 402 + lPad, 602 + tPad);
+	    
+	    g.drawLine(0 + lPad, 201 + tPad, 602 + lPad, 201 + tPad);
+	    g.drawLine(0 + lPad, 402 + tPad, 602 + lPad, 402 + tPad);
+	    //g2.setColor(Color.BLUE);
+	    //g2.drawLine(0, 0, 200, 200);
+	    
+	    //DrawnO testO = new DrawnO(100,200);
+	  	//g.drawString("O", testO.xCoord, testO.yCoord);
+  		
+  		for (TicTacToeBoard.DrawnX thisX: xList) {
+  			g.drawString("X", thisX.xCoord, thisX.yCoord);
+  		}
+  		
+  		for (TicTacToeBoard.DrawnO thisO: oList) {
+  			g.drawString("O", thisO.xCoord, thisO.yCoord);
+  		}
+    
 	}
 	
 	class DrawnX {
@@ -112,13 +122,13 @@ public class TicTacToeBoard extends JPanel {
 			if (turn)
 			{
 				System.out.println(e.getX() + " " + e.getY());
-				xList.add(new DrawnX(e.getX()-10, e.getY()+10));
+				xList.add(new DrawnX(e.getX()-75, e.getY()+75));
 				repaint();
 			}
 			else
 			{
 				System.out.println(e.getX() + " " + e.getY());
-				oList.add(new DrawnO(e.getX()-10, e.getY()+10));
+				oList.add(new DrawnO(e.getX()-75, e.getY()+75));
 				repaint();
 			}
 			turn = ! turn;
