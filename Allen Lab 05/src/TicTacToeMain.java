@@ -9,8 +9,10 @@ public class TicTacToeMain {
 		createAndShowGUI();
 		}
 	static void createAndShowGUI() {
+		int gameWidth = 622;
+		int gameHeight= 820;
 		JFrame frame = new JFrame("Allen's Tic Tac Toe");
-		TicTacToeBoard board =new TicTacToeBoard(622,722);
+		TicTacToeBoard board =new TicTacToeBoard(gameWidth,gameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		int rOffset = 17;
@@ -18,7 +20,7 @@ public class TicTacToeMain {
 		
 		frame.add(board);
 		//root.setSize(217, 240);
-		frame.setSize(622+ rOffset,722 + bOffset);
+		frame.setSize(622+ rOffset,820 + bOffset);
 		frame.setVisible(true);
 	}
 

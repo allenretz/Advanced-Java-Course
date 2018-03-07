@@ -54,7 +54,7 @@ public class TicTacToeBoard extends JPanel {
 	    //g2.setColor(Color.BLUE);
 	    //g2.drawLine(0, 0, 200, 200);
 	    
-	    //DrawnO testO = new DrawnO(100,200);
+	    //DrawnO testO = new DrawnO(25,225);
 	  	//g.drawString("O", testO.xCoord, testO.yCoord);
   		
   		for (TicTacToeBoard.DrawnX thisX: xList) {
@@ -64,6 +64,11 @@ public class TicTacToeBoard extends JPanel {
   		for (TicTacToeBoard.DrawnO thisO: oList) {
   			g.drawString("O", thisO.xCoord, thisO.yCoord);
   		}
+  		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+  		g.drawString("Instructions", 10, 680);
+  		g.drawString("Players shall alternate placing X's and O's on the board staring with X", 10, 710);
+  		g.drawString("until one player gets '3-in-a-row' including diagonals. The player that", 10, 750);
+  		g.drawString("placed '3-in-a-row' wins. If all squares are filled in, no-one wins.", 10, 790);
     
 	}
 	
