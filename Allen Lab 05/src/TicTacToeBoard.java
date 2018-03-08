@@ -8,9 +8,15 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class TicTacToeBoard extends JPanel {
-	ArrayList<DrawnX> xList = new ArrayList<DrawnX>();
-	ArrayList<DrawnO> oList = new ArrayList<DrawnO>();
+	int[][] gameSpaces = { // 0 -> X, 1 -> O
+							{-1,-1,-1},
+							{-1,-1,-1},
+							{-1,-1,-1},
+						 };
 	boolean turn = true;
+	
+	int lPad = 10;
+	int tPad = 60;
 	
 	
 	public TicTacToeBoard(int width, int height) {
@@ -36,9 +42,6 @@ public class TicTacToeBoard extends JPanel {
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
 	    
-	    int lPad = 10;
-	    int tPad = 60;
-	    
 	    g.setFont(new Font("Comic Sans MS", Font.PLAIN, 32));
 	    g.drawString("Allen's Tic Tac Toe Game", 120, 40);
 	    
@@ -57,13 +60,32 @@ public class TicTacToeBoard extends JPanel {
 	    //DrawnO testO = new DrawnO(25,225);
 	  	//g.drawString("O", testO.xCoord, testO.yCoord);
   		
-  		for (TicTacToeBoard.DrawnX thisX: xList) {
-  			g.drawString("X", thisX.xCoord, thisX.yCoord);
+  		for (int y = 0; y < 3; y++) {
+  			for (int x = 0; x < 3; x++) {
+  				if (gameSpaces[y][x] == 0) {
+  					g.drawString("X", 201 * x +lPad + 15, 201 * y + tPad + 165);
+  				} else if (gameSpaces[y][x] == 1) {
+  					g.drawString("O", 201 * x +lPad + 15, 201 * y + tPad + 165);
+  				}
+  			}
   		}
   		
-  		for (TicTacToeBoard.DrawnO thisO: oList) {
-  			g.drawString("O", thisO.xCoord, thisO.yCoord);
+  		if (isWinnerOrCatsGame() != -1) {
+  			
+  			if (isWinnerOrCatsGame() != 2) {
+  				g.setColor(Color.RED);
+  				g.drawString("WIN", 45, 400 + 30);
+  			}
+  			else {
+  				g.setColor(Color.BLUE);
+  				g.drawString("~~~~~", lPad, tPad + 155);
+  				g.drawString("~TIE~", lPad, tPad + 355);
+  				g.drawString("~~~~~", lPad, tPad + 555);
+  				
+  			}
+  			g.setColor(Color.BLACK);
   		}
+  		
   		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
   		g.drawString("Instructions", 10, 680);
   		g.drawString("Players shall alternate placing X's and O's on the board staring with X", 10, 710);
@@ -92,6 +114,35 @@ public class TicTacToeBoard extends JPanel {
 			this.yCoord = yCoord;
 			
 		}
+	}
+	
+	public boolean equalAndPlaced(int a,int b,int c) {
+		return a != -1 && a == b && b == c;
+	}
+	
+	private int isWinnerOrCatsGame() {
+		int[][] gs = gameSpaces;
+		boolean catsGame = true;
+		
+		if (  equalAndPlaced(  gs[0][0], gs[0][1], gs[0][2])  ) {return gs[0][0];}
+		if (  equalAndPlaced(  gs[1][0], gs[1][1], gs[1][2])  ) {return gs[1][0];}
+		if (  equalAndPlaced(  gs[2][0], gs[2][1], gs[2][2])  ) {return gs[2][0];}
+		
+		if (  equalAndPlaced(  gs[0][0], gs[1][0], gs[2][0])  ) {return gs[0][0];}
+		if (  equalAndPlaced(  gs[0][1], gs[1][1], gs[2][1])  ) {return gs[0][1];}
+		if (  equalAndPlaced(  gs[0][2], gs[1][2], gs[2][2])  ) {return gs[0][2];}
+		
+		if (  equalAndPlaced(  gs[0][0], gs[1][1], gs[2][2])  ) {return gs[0][0];}
+		if (  equalAndPlaced(  gs[0][2], gs[1][1], gs[2][0])  ) {return gs[0][2];}
+		
+		for (int y = 0; y < 3; y ++) {
+			for (int x = 0; x < 3; x ++) {
+				catsGame &= gs[y][x] != -1 ;
+			}
+		}
+		if (catsGame) {return 2;}
+		
+		return -1;
 	}
 	
 
@@ -124,19 +175,32 @@ public class TicTacToeBoard extends JPanel {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if (turn)
-			{
-				System.out.println(e.getX() + " " + e.getY());
-				xList.add(new DrawnX(e.getX()-75, e.getY()+75));
-				repaint();
-			}
-			else
-			{
-				System.out.println(e.getX() + " " + e.getY());
-				oList.add(new DrawnO(e.getX()-75, e.getY()+75));
-				repaint();
-			}
-			turn = ! turn;
+			int tmpX = e.getX();
+			int tmpY = e.getY();
+			
+			int sX   = -1;
+			int sY   = -1;
+			
+			
+			if      (tmpX < lPad)       { sX = -1; }
+			else if (tmpX < lPad + 201) { sX = 0;  }
+			else if (tmpX < lPad + 402) { sX = 1;  }
+			else if (tmpX < lPad + 603) { sX = 2;  }
+			else                        { sX = -1; }
+			
+			if      (tmpY < tPad)       { sY = -1; }
+			else if (tmpY < tPad + 201) { sY = 0;  }
+			else if (tmpY < tPad + 402) { sY = 1;  }
+			else if (tmpY < tPad + 603) { sY = 2;  }
+			else                        { sY = -1; }
+			
+			if (isWinnerOrCatsGame() == -1 && sX != -1 && sY != -1 && gameSpaces[sY][sX] == -1){
+				gameSpaces[sY][sX] =  turn? 0 : 1;
+				turn = ! turn;
+				}
+			
+			
+			repaint();
 			
 		}
 		
